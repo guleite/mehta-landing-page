@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mehta | Simulador de layout com containers</title>
+  <meta name="description" content="Envie a planta baixa do seu terreno, informe suas necessidades e visualize uma proposta de distribuição de containers Mehta.">
+  <meta name="theme-color" content="#FF7300">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=Roboto+Slab:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body>
+
+<!-- ============ SPRITE: logo + ícones ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo-mehta" viewBox="0 0 952 205">
+    <path style="fill:var(--logo-shell,#516672)" d="m164.847 143.053c-9.299 4.69-18.518 9.34-27.643 13.963-10.157 5.145-20.247 10.291-30.284 15.476-5.789 2.989-9.943 3.739-15.812.63l-1.621-.656c-18.961-9.796-38.082-19.444-57.659-29.306l-29.252 14.137c.884.844 2.01 1.568 3.43 2.291 7.678 3.833 15.33 7.692 22.994 11.511 21.4 10.733 42.772 21.507 64.078 32.387 1.863.938 3.524 1.434 5.146 1.514 1.621-.08 3.283-.576 5.145-1.514 28.93-14.793 57.968-29.386 87.072-43.898 1.501-.75 2.653-1.554 3.538-2.465z"/>
+    <path style="fill:var(--logo-shell,#516672)" d="m66.091 40.504c8.402-4.261 16.75-8.508 25.058-12.796 4.783-2.479 8.361-2.627 13.225-.041.416.228.844.443 1.26.657-.027-.214-.04-.402-.081-.603 15.692 8.107 31.517 16.093 47.704 24.24l24.186-11.684c-.723-.697-1.661-1.3-2.827-1.903-6.352-3.162-12.69-6.352-19.014-9.527-17.715-8.871-35.389-17.782-53.01-26.773-1.541-.791-2.908-1.193-4.261-1.26-1.34.067-2.707.469-4.248 1.26-23.932 12.234-47.958 24.294-72.024 36.3-1.246.643-2.197 1.286-2.934 2.05l24.092 11.631c7.705-3.873 15.316-7.732 22.874-11.551"/>
+    <path style="fill:var(--logo-mark,#ec7a36)" d="m.06 71.0910358v-17.9699281c.11409679-1.0483009.43404259-2.0222931 1.31-2.8751077.455-.429 1.032-.857 1.809-1.206 2.01-.938 4.717-2.305 6.713-3.283l31.583 13.065 56.038 25.862.349-.161.348.161 56.038-25.862 31.597-13.065c1.983.978 4.703 2.345 6.7 3.283.79.349 1.367.777 1.809 1.206 1.514 1.474 1.367 3.31 1.367 5.266.013 29.48-.081 58.973.16 88.466 0 .978-.134 1.835-.348 2.586l-29.493-13.815-.013-61.626-.094.027-.282.134-58.409 26.96v95.353c0-1.702-.014-29.747-.014-29.694l-.496 30.873c-3.242 1.675-6.016 2.439-8.87 2.265-2.841.174-5.628-.59-8.871-2.265l-.496-30.873c0-.053-.013 27.992-.013 29.694v-95.353l-58.41-26.96-.295-.134-.067-.027.108 61.907-29.48 14.043z"/>
+    <g style="fill:var(--logo-text,#ec7a36)">
+      <path d="m400.336 147.046h-16.924v-83.534h-.429l-53.05 66.61-52.621-66.61h-.429v83.534h-16.924v-102.146h21.172l48.949 61.719 49.151-61.719h21.105z"/>
+      <path d="m541.395 147.046h-106.917v-102.146h102.978v15.248h-86.054v26.251h59.803v15.222h-59.803v30.203h89.993z"/>
+      <path d="m682.629 147.046h-16.937v-45.425h-81.833v45.425h-16.91v-102.146h16.91v41.499h81.833v-41.499h16.937z"/>
+      <path d="m817.069 60.148h-48.815v86.898h-16.911v-86.898h-48.829v-15.248h114.555z"/>
+      <path d="m912.864 108.964-26.022-49.499-26.344 49.499zm38.511 38.082h-18.518l-11.779-22.846h-68.794l-11.752 22.846h-18.518l54.028-102.146h21.305z"/>
+    </g>
+  </symbol>
+
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/><rect x="6.5" y="6.5" width="6" height="3"/><rect x="6.5" y="12" width="6" height="3"/><path d="M16.5 6.5v9"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M9 13h6M9 17h4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M4 20h16"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v5h-5M20 12a8 8 0 0 1-14 5.3M4 20v-5h5"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5L2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6.5l8.5 6 8.5-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M15 4a5 5 0 0 0-4.6 6.9L4 17.3V20h2.7l6.4-6.4A5 5 0 0 0 20 9l-3 1-2-2 1-3z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19l7-7"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></symbol>
+  <symbol id="i-container" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="10" rx=".5"/><path d="M6 9.5v5M9 9.5v5M12 9.5v5M15 9.5v5M18 9.5v5"/></symbol>
+  <symbol id="i-helmet" viewBox="0 0 24 24"><path d="M3.5 17h17v2h-17z"/><path d="M5.5 17v-3a6.5 6.5 0 0 1 13 0v3"/><path d="M10 8v4M14 8v4"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M9 7V5h6v2M3 12.5h18"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V6.5M3 14.5h18V18M21 14.5V12a3 3 0 0 0-3-3h-7v5.5"/><circle cx="7" cy="11.5" r="1.7"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></symbol>
+  <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 21V3c-2 1-3.5 4-3.5 7.5H17"/></symbol>
+  <symbol id="i-shower" viewBox="0 0 24 24"><path d="M5 21V7a3.5 3.5 0 0 1 7 0"/><path d="M9 9.5h6"/><path d="M10 13v.5M13.5 13v.5M11.7 16v.5M15 16v.5M10 19v.5M13.5 19v.5"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M4.5 10.5V20h15v-9.5"/><path d="M3 10.5L5 4h14l2 6.5z"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4.5h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><path d="M9 3.5h6v5.5h5.5v6H15v5.5H9V15H3.5V9H9z"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="18" cy="12" r="1.4"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
+  <symbol id="i-youtube" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="3.5"/><path d="M10.2 9.4v5.2l4.4-2.6z"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14.5 21v-7h2.6l.4-3h-3V9.2c0-.9.3-1.5 1.5-1.5h1.6V5.1a20 20 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4.1V11H8.5v3h2.7v7"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.3 6.7v.1"/></symbol>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="topbar" id="topbar">
+  <div class="container topbar-in">
+    <a href="#top" class="brand" aria-label="Mehta — início"><svg class="logo" viewBox="0 0 952 205"><use href="#logo-mehta"/></svg></a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#sobre">A Mehta</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="topbar-cta">
+      <a class="tel" href="tel:+556132621111"><svg class="ic"><use href="#i-phone"/></svg>(61) 3262-1111</a>
+      <a class="btn btn-primary sm" href="#simulador">Simular projeto</a>
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <svg class="wire" viewBox="0 0 1440 820" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g fill="none" stroke="#4A4A4A" stroke-width="1">
+      <path d="M640 70H1190V620H640Z M790 -40H1340V510H790Z M640 70L790 -40 M1190 70L1340 -40 M1190 620L1340 510 M640 620L790 510"/>
+      <path d="M640 70L1190 620 M1190 70L640 620 M790 -40L1340 510 M1340 -40L790 510 M915 70V620 M640 345H1190 M1065 -40V510 M790 235H1340"/>
+      <path d="M280 820L640 620 M240 0L640 70 M1440 780L1190 620 M1440 160L1190 70 M1440 700L1340 510 M520 820L790 510"/>
+      <path d="M-60 520H380V860H-60Z M380 520L640 345 M380 860L640 620"/>
+    </g>
+  </svg>
+
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Planejador de layout Mehta</span>
+      <h1><span class="light">Envie sua planta.</span> Veja seus containers no terreno.</h1>
+      <p class="lead">Faça o upload da planta baixa, conte o que você precisa e receba uma proposta visual de distribuição dos containers Mehta, desenhada sobre o <em>seu</em> terreno em poucos minutos.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary lg" type="button" data-action="upload"><svg class="ic"><use href="#i-upload"/></svg>Enviar minha planta</button>
+        <button class="btn btn-ghost lg" type="button" data-action="sample">Ver um exemplo</button>
+      </div>
+      <ul class="hero-facts">
+        <li><strong>Desde 2003</strong><span>construção industrializada</span></li>
+        <li><strong>Todo o Brasil</strong><span>sede em Brasília/DF</span></li>
+        <li><strong>3, 6 e 12 m</strong><span>módulos padronizados</span></li>
+      </ul>
+    </div>
+
+    <div class="hero-visual reveal" aria-hidden="true">
+      <div class="hv-card">
+        <div class="hv-head"><span class="hv-dots"><i></i><i></i><i></i></span><span>proposta-layout · Lotes 01 e 02</span><span class="hv-live">ao vivo</span></div>
+        <svg class="hv-plan" viewBox="0 0 560 440">
+          <defs>
+            <pattern id="hvHatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9aa5ad" stroke-width="1.4"/></pattern>
+            <pattern id="hvGrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#ECEBF6" stroke-width="1"/></pattern>
+            <linearGradient id="hvScanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7300" stop-opacity="0"/><stop offset="1" stop-color="#FF7300" stop-opacity=".35"/></linearGradient>
+          </defs>
+          <rect width="560" height="440" fill="url(#hvGrid)"/>
+          <rect x="0" y="380" width="560" height="60" fill="#EEEDF6"/>
+          <line x1="0" y1="410" x2="560" y2="410" stroke="#C9C6E0" stroke-width="2" stroke-dasharray="12 9"/>
+          <text x="530" y="400" text-anchor="end" class="hv-t">RUA PROJETADA</text>
+
+          <rect x="40" y="56" width="480" height="300" fill="#fff" stroke="#4A4A4A" stroke-width="2.5"/>
+          <line x1="280" y1="56" x2="280" y2="356" stroke="#4A4A4A" stroke-width="2"/>
+          <rect class="hv-area" x="44" y="60" width="232" height="292"/>
+          <rect class="hv-area d2" x="284" y="60" width="232" height="292"/>
+
+          <rect x="54" y="70" width="96" height="74" fill="url(#hvHatch)" stroke="#4A4A4A" stroke-width="1.8"/>
+          <g fill="none" stroke="#8FA08F" stroke-width="1.6"><circle cx="494" cy="318" r="15"/><path d="M484 318h20M494 308v20"/></g>
+
+          <g class="hv-dim">
+            <path d="M40 34H520M40 28v12M280 28v12M520 28v12" stroke="#FF7300" stroke-width="1.5" fill="none"/>
+            <rect x="244" y="23" width="72" height="22" rx="11" fill="#FF7300"/>
+            <text x="280" y="38" text-anchor="middle" class="hv-dim-t">48,00 m</text>
+          </g>
+
+          <g class="hv-ctrs">
+            <g class="hv-c" style="--d:1.75s"><rect x="54" y="322" width="60" height="24" rx="2" fill="#516672"/></g>
+            <g class="hv-c" style="--d:1.85s"><rect x="184" y="322" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:1.95s"><rect x="246" y="250" width="24" height="60" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.05s"><rect x="246" y="180" width="24" height="60" rx="2" fill="#7D7AB8"/></g>
+            <g class="hv-c" style="--d:2.15s"><rect x="166" y="70" width="60" height="24" rx="2" fill="#E9A23B"/></g>
+            <g class="hv-c" style="--d:2.25s"><rect x="296" y="72" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.32s"><rect x="371" y="72" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.39s"><rect x="446" y="72" width="60" height="24" rx="2" fill="#7D7AB8"/></g>
+            <g class="hv-c" style="--d:2.46s"><rect x="296" y="126" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.53s"><rect x="371" y="126" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.60s"><rect x="446" y="126" width="60" height="24" rx="2" fill="#FF7300"/></g>
+            <g class="hv-c" style="--d:2.67s"><rect x="296" y="180" width="60" height="24" rx="2" fill="#7D7AB8"/></g>
+            <g class="hv-c" style="--d:2.74s"><rect x="371" y="180" width="60" height="24" rx="2" fill="#FF7300"/></g>
+          </g>
+          <g fill="#4A4A4A"><path d="M160 372l-7 8h14z"/><path d="M400 372l-7 8h14z"/></g>
+          <rect class="hv-scan" x="40" y="56" width="480" height="40" fill="url(#hvScanG)"/>
+        </svg>
+      </div>
+      <div class="hv-chip file"><span class="ico"><svg class="ic"><use href="#i-file"/></svg></span><div><strong>planta-terreno.pdf</strong><small>Planta enviada</small></div><span class="ok"><svg class="ic"><use href="#i-check"/></svg></span></div>
+      <div class="hv-chip result">
+        <div class="r-top"><span class="ico"><svg class="ic"><use href="#i-layout"/></svg></span><div><strong>13 containers · 6 m</strong><small>Proposta gerada em 2 terrenos</small></div></div>
+        <div class="r-bar"><span style="width:21%"></span></div>
+        <div class="r-meta"><span>Ocupação do terreno</span><b>21%</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEGMENTOS ============ -->
+<div class="segments">
+  <div class="container segments-in">
+    <span class="seg-lbl">Soluções para</span>
+    <ul>
+      <li>Construção civil</li><li>Indústria</li><li>Agronegócio</li><li>Empresas</li><li>Eventos</li><li>Educação</li><li>Saúde</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section class="section" id="como-funciona">
+  <div class="container">
+    <header class="section-head reveal">
+      <span class="eyebrow">Como funciona</span>
+      <h2><span class="light">Da planta baixa à</span> proposta visual</h2>
+      <p class="lead">Quatro etapas simples para você enxergar o projeto antes de contratar, sem precisar de software técnico.</p>
+    </header>
+    <ol class="steps-grid">
+      <li class="step-card reveal"><span class="step-n">01</span><span class="step-ic"><svg class="ic-lg"><use href="#i-upload"/></svg></span><h3>Envie sua planta</h3><p>Faça o upload da planta baixa ou de situação do terreno em PDF, JPG ou PNG.</p></li>
+      <li class="step-card reveal"><span class="step-n">02</span><span class="step-ic"><svg class="ic-lg"><use href="#i-sliders"/></svg></span><h3>Conte sua necessidade</h3><p>Informe terrenos, quantidade de containers, finalidade e o que espera do espaço.</p></li>
+      <li class="step-card reveal"><span class="step-n">03</span><span class="step-ic"><svg class="ic-lg"><use href="#i-scan"/></svg></span><h3>Análise automática</h3><p>O sistema identifica limites, construções e obstáculos e calcula a área útil.</p></li>
+      <li class="step-card reveal"><span class="step-n">04</span><span class="step-ic"><svg class="ic-lg"><use href="#i-layout"/></svg></span><h3>Receba a proposta</h3><p>Veja sua planta com os containers posicionados, ajuste e envie para orçamento.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ SIMULADOR ============ -->
+<section class="sim-section" id="simulador">
+  <div class="container">
+    <header class="section-head center reveal">
+      <span class="eyebrow">Simulador de layout</span>
+      <h2><span class="light">Monte agora o seu</span> projeto com containers</h2>
+      <p class="lead">A proposta é gerada sobre a planta que você enviar: cada resultado é único para o seu terreno e a sua necessidade.</p>
+    </header>
+
+    <div class="sim-card reveal">
+      <ol class="stepper" id="stepper">
+        <li data-step="1" class="is-active"><button type="button"><span class="num">1</span><span class="lbl">Planta baixa</span></button></li>
+        <li data-step="2"><button type="button"><span class="num">2</span><span class="lbl">Seu projeto</span></button></li>
+        <li data-step="3"><button type="button"><span class="num">3</span><span class="lbl">Análise</span></button></li>
+        <li data-step="4"><button type="button"><span class="num">4</span><span class="lbl">Proposta</span></button></li>
+      </ol>
+
+      <div class="sim-grid">
+        <!-- painel -->
+        <div class="sim-panel">
+
+          <!-- PASSO 1 -->
+          <div class="pane" data-pane="1">
+            <div>
+              <h3 class="pane-title">Envie a planta baixa do terreno</h3>
+              <p class="pane-sub">Ela será a base para identificar o espaço disponível e posicionar os containers.</p>
+            </div>
+
+            <div class="upload-block" id="uploadBlock">
+              <label class="dropzone" id="dropzone" for="fileInput" tabindex="0">
+                <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,application/pdf,.pdf" hidden>
+                <span class="dz-ic"><svg class="ic-lg"><use href="#i-upload"/></svg></span>
+                <strong>Arraste sua planta aqui</strong>
+                <span>ou <u>clique para selecionar o arquivo</u></span>
+                <small>PDF, JPG, PNG ou WEBP · até 20 MB</small>
+              </label>
+              <button class="sample-link" type="button" data-action="sample-inline">Não tem a planta agora? <strong>Usar planta de exemplo</strong></button>
+              <ul class="tips">
+                <li><svg class="ic"><use href="#i-check"/></svg>Planta de situação ou planta baixa, vista de cima</li>
+                <li><svg class="ic"><use href="#i-check"/></svg>Limites do terreno bem visíveis (linhas fechadas)</li>
+                <li><svg class="ic"><use href="#i-check"/></svg>Arquivos DWG: exporte em PDF antes de enviar</li>
+              </ul>
+            </div>
+
+            <div class="file-block" id="fileBlock" hidden>
+              <div class="file-chip">
+                <span class="fi"><svg class="ic"><use href="#i-file"/></svg></span>
+                <div class="fc-txt"><strong id="fileName">planta.pdf</strong><small id="fileMeta"></small></div>
+                <button class="rm" id="removeFile" type="button" aria-label="Remover planta" title="Trocar planta"><svg class="ic"><use href="#i-x"/></svg></button>
+              </div>
+              <div class="notice" id="detectMsg"></div>
+
+              <div class="field">
+                <label for="widthM">Largura total da área desenhada</label>
+                <div class="input-unit"><input type="number" id="widthM" class="input" min="3" max="3000" step="0.5" value="30" inputmode="decimal"><span>m</span></div>
+                <small class="hint">Frente do terreno (ou a soma das frentes, se houver mais de um lote). Define a escala da planta — veja a cota em laranja na visualização.</small>
+              </div>
+
+              <div class="field">
+                <span class="label" id="frontLbl">Frente / acesso do terreno</span>
+                <div class="seg" id="frontSeg" role="radiogroup" aria-labelledby="frontLbl">
+                  <button type="button" data-v="bottom" class="on">Inferior</button>
+                  <button type="button" data-v="top">Superior</button>
+                  <button type="button" data-v="left">Esquerda</button>
+                  <button type="button" data-v="right">Direita</button>
+                </div>
+              </div>
+
+              <div class="manual-row">
+                <button class="btn btn-ghost sm" type="button" id="drawBtn"><svg class="ic"><use href="#i-pencil"/></svg><span>Desenhar área manualmente</span></button>
+                <button class="btn btn-text sm" type="button" id="clearDraw" hidden>Limpar áreas</button>
+              </div>
+            </div>
+
+            <div class="pane-actions">
+              <span></span>
+              <button class="btn btn-primary" type="button" id="toStep2" disabled>Continuar<svg class="ic"><use href="#i-arrow"/></svg></button>
+            </div>
+          </div>
+
+          <!-- PASSO 2 -->
+          <div class="pane" data-pane="2" hidden>
+            <div>
+              <h3 class="pane-title">Conte sobre o seu projeto</h3>
+              <p class="pane-sub">Essas informações orientam a análise e a distribuição dos containers.</p>
+            </div>
+            <div class="sample-note" id="sampleNote" hidden><svg class="ic"><use href="#i-info"/></svg>Preenchemos dados de exemplo. Altere à vontade.</div>
+
+            <div class="row2">
+              <div class="field">
+                <label for="lotsN">Quantidade de terrenos</label>
+                <div class="num-input">
+                  <button type="button" data-step-for="lotsN" data-d="-1" aria-label="Diminuir"><svg class="ic"><use href="#i-minus"/></svg></button>
+                  <input type="number" id="lotsN" min="1" max="6" value="1" inputmode="numeric">
+                  <button type="button" data-step-for="lotsN" data-d="1" aria-label="Aumentar"><svg class="ic"><use href="#i-plus"/></svg></button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="countN">Quantidade de containers</label>
+                <div class="num-input">
+                  <button type="button" data-step-for="countN" data-d="-1" aria-label="Diminuir"><svg class="ic"><use href="#i-minus"/></svg></button>
+                  <input type="number" id="countN" min="1" max="80" value="6" inputmode="numeric">
+                  <button type="button" data-step-for="countN" data-d="1" aria-label="Aumentar"><svg class="ic"><use href="#i-plus"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="label" id="purposeLbl">Finalidade dos containers</span>
+              <div class="chips" id="purposeChips" role="radiogroup" aria-labelledby="purposeLbl"></div>
+              <input type="text" class="input" id="purposeOther" placeholder="Descreva a finalidade (ex.: guarita, oficina, creche…)" hidden maxlength="60">
+            </div>
+
+            <div class="field">
+              <span class="label" id="sizeLbl">Tamanho do módulo</span>
+              <div class="seg" id="sizeSeg" role="radiogroup" aria-labelledby="sizeLbl">
+                <button type="button" data-v="auto" class="on">Automático</button>
+                <button type="button" data-v="3">3 m</button>
+                <button type="button" data-v="6">6 m</button>
+                <button type="button" data-v="12">12 m</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="desc">Descrição da necessidade</label>
+              <textarea id="desc" class="input" rows="4" maxlength="600" placeholder="Ex.: canteiro para obra de 18 meses, com escritório para 6 pessoas, almoxarifado, vestiário para 40 operários e refeitório. Precisamos manter área livre para caminhões."></textarea>
+              <small class="hint counter"><span id="descCount">0</span>/600</small>
+            </div>
+
+            <div class="pane-actions">
+              <button class="btn btn-text" type="button" data-go="1"><svg class="ic"><use href="#i-arrow-left"/></svg>Voltar</button>
+              <button class="btn btn-primary" type="button" id="generateBtn">Gerar proposta<svg class="ic"><use href="#i-arrow"/></svg></button>
+            </div>
+          </div>
+
+          <!-- PASSO 3 -->
+          <div class="pane" data-pane="3" hidden>
+            <div>
+              <h3 class="pane-title">Analisando sua planta…</h3>
+              <p class="pane-sub">Isso leva apenas alguns segundos.</p>
+            </div>
+            <ul class="progress-list" id="progressList">
+              <li>Lendo a planta baixa enviada</li>
+              <li>Identificando limites, construções e obstáculos</li>
+              <li>Calculando a área útil de cada terreno</li>
+              <li>Interpretando a finalidade: <b id="pPurpose">—</b></li>
+              <li>Distribuindo os containers no espaço</li>
+            </ul>
+            <div class="progress-bar"><span id="progressFill"></span></div>
+          </div>
+
+          <!-- PASSO 4 -->
+          <div class="pane" data-pane="4" hidden>
+            <div>
+              <span class="badge-ok"><svg class="ic"><use href="#i-check"/></svg>Proposta gerada</span>
+              <h3 class="pane-title" id="resTitle">—</h3>
+              <p class="pane-sub" id="resSub"></p>
+            </div>
+            <div class="stats" id="stats"></div>
+            <div>
+              <span class="label">Composição sugerida</span>
+              <ul class="legend" id="legend"></ul>
+            </div>
+            <div class="notice warn" id="resAlert" hidden></div>
+            <p class="tip"><svg class="ic"><use href="#i-move"/></svg>Arraste os containers na planta para ajustar. Clique em um módulo e use <b>Girar</b> (ou duplo clique).</p>
+            <div class="pane-actions col">
+              <button class="btn btn-primary" type="button" id="quoteBtn">Solicitar orçamento desta proposta<svg class="ic"><use href="#i-arrow"/></svg></button>
+              <div class="btn-row">
+                <button class="btn btn-ghost sm" type="button" id="downloadBtn"><svg class="ic"><use href="#i-download"/></svg>Baixar imagem</button>
+                <button class="btn btn-ghost sm" type="button" data-go="2"><svg class="ic"><use href="#i-sliders"/></svg>Ajustar dados</button>
+                <button class="btn btn-text sm" type="button" id="restartBtn"><svg class="ic"><use href="#i-refresh"/></svg>Nova planta</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- visualização -->
+        <div class="sim-viewer">
+          <div class="viewer-bar">
+            <span class="vb-title"><i class="vb-dot"></i><span id="viewerTitle">Visualização da planta</span></span>
+            <div class="viewer-tools">
+              <button type="button" class="tool" id="rotateBtn" hidden disabled title="Girar container selecionado"><svg class="ic"><use href="#i-rotate"/></svg><span>Girar</span></button>
+              <button type="button" class="tool" id="compareBtn" hidden title="Mostrar / ocultar containers"><svg class="ic"><use href="#i-eye"/></svg><span>Comparar</span></button>
+              <button type="button" class="tool" id="fsBtn" title="Tela cheia"><svg class="ic"><use href="#i-expand"/></svg></button>
+            </div>
+          </div>
+          <div class="viewer-stage" id="stage">
+            <div class="viewer-empty" id="viewerEmpty">
+              <svg class="ve-ill" viewBox="0 0 160 120" aria-hidden="true">
+                <rect x="14" y="14" width="132" height="92" rx="4" fill="#fff" stroke="#C5C3E0" stroke-width="2" stroke-dasharray="6 5"/>
+                <rect x="30" y="76" width="34" height="14" rx="2" fill="#FFE3CC"/>
+                <rect x="70" y="76" width="34" height="14" rx="2" fill="#FFE3CC"/>
+                <rect x="118" y="30" width="14" height="34" rx="2" fill="#FFE3CC"/>
+                <rect x="30" y="28" width="40" height="30" fill="#ECEBF6"/>
+              </svg>
+              <strong>Sua planta aparecerá aqui</strong>
+              <span>Envie um arquivo ou use a planta de exemplo para começar.</span>
+            </div>
+            <svg id="plan" hidden preserveAspectRatio="xMidYMid meet" role="img" aria-label="Planta baixa com a proposta de containers"></svg>
+            <div class="scanline" aria-hidden="true"></div>
+            <div class="viewer-busy" id="viewerBusy" hidden><span class="spinner"></span><span id="busyText">Carregando…</span></div>
+          </div>
+          <div class="viewer-foot" id="viewerFoot"><svg class="ic"><use href="#i-info"/></svg><span id="viewerHint">Formatos aceitos: PDF, JPG, PNG e WEBP.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIO -->
+    <div class="report" id="report" hidden>
+      <div class="report-grid">
+        <article class="report-main">
+          <span class="eyebrow">Entenda a proposta</span>
+          <h3>Como os containers foram distribuídos</h3>
+          <p id="repSummary"></p>
+          <ul class="why" id="repWhy"></ul>
+          <div class="need" id="repNeedWrap" hidden>
+            <span class="label">Sua necessidade</span>
+            <blockquote id="repNeed"></blockquote>
+          </div>
+          <ul class="notes" id="repNotes"></ul>
+        </article>
+        <aside class="report-side">
+          <h4>Quadro de módulos</h4>
+          <table class="ctable"><thead><tr><th>Uso</th><th>Qtd.</th><th>Módulo</th><th>Terreno</th></tr></thead><tbody id="repTable"></tbody></table>
+          <dl class="kv" id="repKv"></dl>
+          <p class="disclaimer"><svg class="ic"><use href="#i-info"/></svg><span>Proposta preliminar gerada automaticamente a partir da planta enviada. A equipe de engenharia da Mehta valida medidas, acessos, normas e prazos antes do projeto executivo.</span></p>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUÇÕES ============ -->
+<section class="section alt" id="solucoes">
+  <div class="container">
+    <header class="section-head reveal">
+      <span class="eyebrow">Soluções Mehta</span>
+      <h2><span class="light">Infraestrutura</span> industrializada sob medida</h2>
+      <p class="lead">Estruturas práticas, versáteis e sustentáveis, com fabricação e montagem rápidas para construção civil, indústria, agronegócio e empresas.</p>
+    </header>
+    <div class="prod-grid">
+      <article class="prod reveal">
+        <div class="prod-ill" data-iso="container"></div>
+        <div class="prod-body">
+          <span class="prod-tag">Mehta Container</span>
+          <h3>Espaços para locação em container</h3>
+          <p>Otimize sua obra com a locação de containers: estrutura 100% metálica, desmontável e transportável, com instalações prontas.</p>
+          <a class="more" href="https://mehta.com.br/conatiners-habitaveis" target="_blank" rel="noopener">Saiba mais<svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+      <article class="prod reveal">
+        <div class="prod-ill" data-iso="modulo"></div>
+        <div class="prod-body">
+          <span class="prod-tag">Mehta Módulos</span>
+          <h3>Soluções em módulos habitáveis</h3>
+          <p>Invista em construções sustentáveis e portáteis, com conforto térmico e acabamento de edificação.</p>
+          <a class="more" href="https://mehta.com.br/modulos-habitaveis" target="_blank" rel="noopener">Saiba mais<svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+      <article class="prod reveal">
+        <div class="prod-ill" data-iso="galpao"></div>
+        <div class="prod-body">
+          <span class="prod-tag">Mehta Mini Galpões</span>
+          <h3>Novo mini galpão modular</h3>
+          <p>A infraestrutura desmontável mais rápida e inovadora da Mehta, para armazenagem e operação.</p>
+          <a class="more" href="https://mehta.com.br/mini-galpoes" target="_blank" rel="noopener">Saiba mais<svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAIS ============ -->
+<section class="section" id="diferenciais">
+  <div class="container ben-wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Por que Mehta</span>
+      <h2><span class="light">Chega pronto.</span> Basta instalar.</h2>
+      <p class="lead">Sua necessidade de infraestrutura sem obra e sem dor de cabeça. Plug and play, simples assim.</p>
+      <ul class="apps">
+        <li>Alojamento</li><li>Banheiro</li><li>Canteiro de obra</li><li>Creche</li><li>Depósito</li><li>Escritório</li><li>Estande</li><li>Eventos</li><li>Guarita</li><li>Oficina</li><li>Quiosque</li><li>Refeitório</li><li>Sala de aula</li><li>Saúde</li><li>Vestiário</li>
+      </ul>
+    </header>
+    <div class="ben-grid">
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-bolt"/></svg><h3>Velocidade</h3><p>Montagem muito mais rápida que barracões de madeira e soluções convencionais.</p></div>
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-grid"/></svg><h3>Tamanhos padronizados</h3><p>Módulos de 3, 6 e 12 m facilitam o planejamento e a montagem da estrutura.</p></div>
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-layers"/></svg><h3>Empilháveis</h3><p>O empilhamento economiza área no terreno e amplia a capacidade do conjunto.</p></div>
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-sparkle"/></svg><h3>Acabamento completo</h3><p>Com ou sem isolamento, entregues com instalações elétrica e hidráulica prontas.</p></div>
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-wrench"/></svg><h3>Manutenção simples</h3><p>Instalações sobrepostas e sanitários prontos facilitam a manutenção no dia a dia.</p></div>
+      <div class="ben reveal"><svg class="ic-lg"><use href="#i-leaf"/></svg><h3>Sustentável</h3><p>Menos resíduos, menor impacto ambiental e estrutura reaproveitável em outros locais.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOBRE ============ -->
+<section class="about" id="sobre">
+  <svg class="about-wire" viewBox="0 0 600 600" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1"><path d="M100 150H420V470H100Z M200 60H520V380H200Z M100 150L200 60 M420 150L520 60 M420 470L520 380 M100 470L200 380 M100 150L420 470 M420 150L100 470"/></g></svg>
+  <div class="container about-grid">
+    <div class="reveal">
+      <span class="eyebrow">A Mehta</span>
+      <h2><span class="light">Junte-se ao movimento pela</span> construção industrializada sustentável</h2>
+      <p>Fundada em 2003, com sede em Brasília (DF) e atuação em todo o Brasil, a Mehta Construções Industrializadas é especializada em construção modular e infraestrutura industrializada.</p>
+      <p>Oferecemos locação de containers, módulos habitáveis e mini galpões modulares, combinando tecnologia, inovação e engenharia própria para entregar soluções personalizadas, com rápida fabricação e montagem, redução de custos e menor impacto ambiental.</p>
+    </div>
+    <ul class="about-stats reveal">
+      <li><strong>2003</strong><span>Ano de fundação</span></li>
+      <li><strong>DF</strong><span>Sede em Brasília</span></li>
+      <li><strong>BR</strong><span>Atuação em todo o país</span></li>
+      <li><strong>100%</strong><span>Estrutura metálica, desmontável e transportável</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section class="section contact" id="contato">
+  <div class="container contact-grid">
+    <div class="contact-copy reveal">
+      <span class="eyebrow">Fale com a Mehta</span>
+      <h2><span class="light">Pronto para tirar o projeto</span> do papel?</h2>
+      <p class="lead">Envie sua proposta para nossa engenharia validar medidas, acessos e prazos e preparar o orçamento.</p>
+      <ul class="contact-list">
+        <li><span class="ci"><svg class="ic"><use href="#i-phone"/></svg></span><div><small>Telefone</small><a href="tel:+556132621111">(61) 3262-1111</a></div></li>
+        <li><span class="ci"><svg class="ic"><use href="#i-mail"/></svg></span><div><small>E-mail</small><a href="mailto:contato@mehta.com.br">contato@mehta.com.br</a></div></li>
+        <li><span class="ci"><svg class="ic"><use href="#i-pin"/></svg></span><div><small>Endereço</small><span>QI 23 lotes 16/18, Setor de Indústrias<br>Taguatinga Norte, Brasília - DF · CEP 72.135-230</span></div></li>
+      </ul>
+    </div>
+
+    <form class="contact-form reveal" id="contactForm" novalidate>
+      <div class="cf-head full">
+        <h3>Solicite um orçamento</h3>
+        <p>Retornamos em até 1 dia útil.</p>
+      </div>
+      <div class="field"><label for="cfName">Nome*</label><input class="input" id="cfName" name="nome" required autocomplete="name"></div>
+      <div class="field"><label for="cfCompany">Empresa</label><input class="input" id="cfCompany" name="empresa" autocomplete="organization"></div>
+      <div class="field"><label for="cfEmail">E-mail*</label><input class="input" id="cfEmail" name="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="cfPhone">Telefone / WhatsApp*</label><input class="input" id="cfPhone" name="telefone" type="tel" required autocomplete="tel" placeholder="(00) 00000-0000"></div>
+      <div class="field full"><label for="cfCity">Cidade / UF da obra</label><input class="input" id="cfCity" name="cidade" placeholder="Ex.: Brasília - DF"></div>
+      <div class="field full"><label for="cfMsg">Mensagem</label><textarea class="input" id="cfMsg" name="mensagem" rows="5" placeholder="Conte um pouco sobre o projeto"></textarea></div>
+      <label class="check full" id="attachWrap"><input type="checkbox" id="attach" disabled><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><span id="attachLbl">Anexar a proposta gerada no simulador <em>(gere uma proposta primeiro)</em></span></label>
+      <div class="full cf-actions">
+        <button class="btn btn-primary lg" type="submit">Solicitar orçamento<svg class="ic"><use href="#i-arrow"/></svg></button>
+        <small>Ao enviar, você concorda em ser contatado pela equipe Mehta.</small>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <svg class="logo" viewBox="0 0 952 205"><use href="#logo-mehta"/></svg>
+        <p>Containers e construção modular para todo o Brasil desde 2003.</p>
+        <div class="social">
+          <a href="https://www.youtube.com/channel/UCarvkcc1GifOIO5wsUVhRKQ" target="_blank" rel="noopener" aria-label="YouTube"><svg class="ic"><use href="#i-youtube"/></svg></a>
+          <a href="https://www.facebook.com/mehtamodular/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic"><use href="#i-facebook"/></svg></a>
+          <a href="https://www.instagram.com/mehtamodular/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic"><use href="#i-instagram"/></svg></a>
+        </div>
+      </div>
+      <div><h4>Mehta Container</h4><ul><li><a href="https://mehta.com.br/conatiners-habitaveis" target="_blank" rel="noopener">Containers Marítimos</a></li><li><a href="https://mehta.com.br/modulos-habitaveis" target="_blank" rel="noopener">Módulos Habitáveis</a></li><li><a href="https://mehta.com.br/mini-galpoes" target="_blank" rel="noopener">Mini Galpões Modulares</a></li></ul></div>
+      <div><h4>Precisa de ajuda?</h4><ul><li><a href="#simulador">Simulador de layout</a></li><li><a href="#contato">Solicite um orçamento</a></li><li><a href="https://mehta.com.br/faq/Containers" target="_blank" rel="noopener">FAQ</a></li></ul></div>
+      <div><h4>Institucional</h4><ul><li><a href="https://mehta.com.br/blog" target="_blank" rel="noopener">Blog</a></li><li><a href="https://mehta.com.br/contato/trabalhe-conosco" target="_blank" rel="noopener">Trabalhe conosco</a></li><li><a href="https://mehta.com.br/contato/fale-conosco" target="_blank" rel="noopener">Fale conosco</a></li></ul></div>
+      <div class="f-addr"><h4>Endereço</h4><p>QI 23 lotes 16/18<br>Setor de Indústrias<br>Taguatinga Norte · Brasília - DF<br>CEP 72.135-230</p><p><a href="tel:+556132621111">(61) 3262-1111</a><br><a href="mailto:contato@mehta.com.br">contato@mehta.com.br</a></p></div>
+    </div>
+    <div class="foot-bottom"><span>© <span id="year">2026</span> Mehta Construções Industrializadas.</span><span>Containers e Construção Modular</span></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/planner.js?v=10"></script>
+<script src="js/app.js?v=10"></script>
+</body>
+</html>
